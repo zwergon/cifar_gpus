@@ -1,0 +1,21 @@
+[build-system]
+
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "cifar_gpus"
+version = "0.0.1"
+
+authors = [
+  { name="Jean-François LECOMTE", email="jean-francois.lecomte@ifpen.fr" },
+]
+
+description = "How to use multi GPUS for learning."
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages]
+find = {}
