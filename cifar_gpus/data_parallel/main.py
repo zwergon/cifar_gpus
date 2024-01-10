@@ -46,7 +46,7 @@ if device == "cuda":
 criterion = F.nll_loss
 optimizers = create_optimizers(net, args.__dict__)
 optimizer = optimizers["optimizer"]
-scheduler = optimizers["lr_scheduler"]
+scheduler = optimizers["lr_scheduler"]["scheduler"]
 
 
 # Training
