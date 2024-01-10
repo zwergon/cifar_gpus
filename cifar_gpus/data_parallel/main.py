@@ -18,7 +18,7 @@ start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 args = arg_parse()
 
 # Data
-print("==> Preparing data..")
+print(". Preparing data")
 
 trainloader, testloader, _ = create_datasets(args.__dict__)
 
@@ -36,10 +36,12 @@ classes = (
 )
 
 # Model
-print("==> Building model..")
+print(". Building model..")
 net = create_model()
 net = net.to(device)
-if device == "cuda":
+num_gpus = torch.cuda.device_count()
+if device == "cuda" and num_gpus > 1:
+    print(".. make it data parallel..")
     net = torch.nn.DataParallel(net)
     cudnn.benchmark = True
 
@@ -56,7 +58,7 @@ def train(epoch):
     train_loss = 0
     correct = 0
     total = 0
-    with tqdm(trainloader, unit="brach") as tepoch:
+    with tqdm(trainloader, unit=" it/s") as tepoch:
         for batch_idx, (inputs, targets) in enumerate(tepoch):
             tepoch.set_description(f"Train {epoch}")
             inputs, targets = inputs.to(device), targets.to(device)
@@ -85,7 +87,7 @@ def test(epoch):
     correct = 0
     total = 0
     with torch.no_grad():
-        with tqdm(testloader, unit="brach") as tepoch:
+        with tqdm(testloader, unit=" it/s") as tepoch:
             for batch_idx, (inputs, targets) in enumerate(tepoch):
                 tepoch.set_description(f"Test {epoch}")
                 inputs, targets = inputs.to(device), targets.to(device)
